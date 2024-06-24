@@ -48,4 +48,44 @@
                 (mt/respond-with {:get-backend (constantly {:status 200})}))]
       (is (= 200 (:status @(sut/get-backend c {:load-balancer-id "test-lb"
                                                :backend-set-name "test-backendset"
-                                               :backend-name "test-backend"})))))))
+                                               :backend-name "test-backend"}))))))
+
+  (testing "can create new backend"
+    (let [c (-> (sut/make-client fake-conf)
+                (mt/respond-with {:create-backend (constantly {:status 200})}))]
+      (is (= 200 (:status @(sut/create-backend
+                            c
+                            {:load-balancer-id "test-lb"
+                             :backend-set-name "test-backendset"
+                             :backend
+                             {:backup false
+                              :drain false
+                              :ip-address "10.2.13.4"
+                              :max-connections 200
+                              :offline false
+                              :port 8080
+                              :weight 1}}))))))
+
+  (testing "can update backend"
+    (let [c (-> (sut/make-client fake-conf)
+                (mt/respond-with {:update-backend (constantly {:status 200})}))]
+      (is (= 200 (:status @(sut/update-backend
+                            c
+                            {:load-balancer-id "test-lb"
+                             :backend-set-name "test-backendset"
+                             :backend-name "1.2.3.4:12342"
+                             :backend
+                             {:backup false
+                              :drain false
+                              :max-connections 200
+                              :offline false
+                              :weight 1}}))))))
+
+  (testing "can delete backend"
+    (let [c (-> (sut/make-client fake-conf)
+                (mt/respond-with {:delete-backend (constantly {:status 204})}))]
+      (is (= 204 (:status @(sut/delete-backend
+                            c
+                            {:load-balancer-id "test-lb"
+                             :backend-set-name "test-backendset"
+                             :backend-name "1.2.3.4:12342"})))))))

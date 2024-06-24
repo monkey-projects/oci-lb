@@ -48,6 +48,7 @@
       :method :get
       :path-parts bs-base-path
       :path-schema lb-path-schema}))
+
    (api-route
     {:route-name :get-backend-set
      :method :get
@@ -59,6 +60,18 @@
 (def be-path-schema (assoc bs-path-schema
                            :backend-name s/Str))
 
+(s/defschema UpdateBackend
+  {(s/optional-key :backup) s/Bool
+   (s/optional-key :drain) s/Bool
+   (s/optional-key :offline) s/Bool
+   (s/optional-key :maxConnections) s/Int
+   (s/optional-key :weight) s/Int})
+
+(s/defschema CreateBackend
+  (assoc UpdateBackend
+         :ipAddress s/Str
+         :port s/Int))
+
 (def backend-routes
   [(p/paged-route
     (api-route
@@ -66,9 +79,30 @@
       :method :get
       :path-parts be-base-path
       :path-schema bs-path-schema}))
+
    (api-route
     {:route-name :get-backend
      :method :get
+     :path-parts be-path
+     :path-schema be-path-schema})
+
+   (api-route
+    {:route-name :create-backend
+     :method :post
+     :path-parts be-base-path
+     :path-schema bs-path-schema
+     :body-schema {:backend CreateBackend}})
+
+   (api-route
+    {:route-name :update-backend
+     :method :put
+     :path-parts be-path
+     :path-schema be-path-schema
+     :body-schema {:backend UpdateBackend}})
+
+   (api-route
+    {:route-name :delete-backend
+     :method :delete
      :path-parts be-path
      :path-schema be-path-schema})])
 
