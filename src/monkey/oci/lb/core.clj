@@ -91,14 +91,16 @@
      :method :post
      :path-parts be-base-path
      :path-schema bs-path-schema
-     :body-schema {:backend CreateBackend}})
+     :body-schema {:backend CreateBackend}
+     :consumes json})
 
    (api-route
     {:route-name :update-backend
      :method :put
      :path-parts be-path
      :path-schema be-path-schema
-     :body-schema {:backend UpdateBackend}})
+     :body-schema {:backend UpdateBackend}
+     :consumes json})
 
    (api-route
     {:route-name :delete-backend
