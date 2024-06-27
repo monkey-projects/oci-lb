@@ -88,4 +88,13 @@
                             c
                             {:load-balancer-id "test-lb"
                              :backend-set-name "test-backendset"
+                             :backend-name "1.2.3.4:12342"}))))))
+
+  (testing "can get backend health status"
+    (let [c (-> (sut/make-client fake-conf)
+                (mt/respond-with {:get-backend-health (constantly {:status 200})}))]
+      (is (= 200 (:status @(sut/get-backend-health
+                            c
+                            {:load-balancer-id "test-lb"
+                             :backend-set-name "test-backendset"
                              :backend-name "1.2.3.4:12342"})))))))

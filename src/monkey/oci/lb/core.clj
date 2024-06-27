@@ -106,6 +106,12 @@
     {:route-name :delete-backend
      :method :delete
      :path-parts be-path
+     :path-schema be-path-schema})
+
+   (api-route
+    {:route-name :get-backend-health
+     :method :get
+     :path-parts (conj be-path "/health")
      :path-schema be-path-schema})])
 
 (def routes
