@@ -68,9 +68,13 @@
    (s/optional-key :maxConnections) s/Int})
 
 (s/defschema CreateBackend
-  (assoc UpdateBackend
-         :ipAddress s/Str
-         :port s/Int))
+  {(s/optional-key :backup) s/Bool
+   (s/optional-key :drain) s/Bool
+   (s/optional-key :offline) s/Bool
+   (s/optional-key :weight) s/Int
+   (s/optional-key :maxConnections) s/Int
+   :ipAddress s/Str
+   :port s/Int})
 
 (def backend-routes
   [(p/paged-route
