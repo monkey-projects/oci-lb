@@ -61,11 +61,11 @@
                            :backend-name s/Str))
 
 (s/defschema UpdateBackend
-  {(s/optional-key :backup) s/Bool
-   (s/optional-key :drain) s/Bool
-   (s/optional-key :offline) s/Bool
-   (s/optional-key :maxConnections) s/Int
-   (s/optional-key :weight) s/Int})
+  {:backup s/Bool
+   :drain s/Bool
+   :offline s/Bool
+   :weight s/Int
+   (s/optional-key :maxConnections) s/Int})
 
 (s/defschema CreateBackend
   (assoc UpdateBackend
